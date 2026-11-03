@@ -1,0 +1,18 @@
+{
+  "name": "tg-mini-shop",
+  "version": "1.0.0",
+  "description": "Telegram Mini App: мини-магазин с корзиной",
+  "type": "module",
+  "private": true,
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "setup-bot": "node scripts/setup-bot.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  }
+}
