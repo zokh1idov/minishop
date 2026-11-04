@@ -5,11 +5,10 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateInitData } from './validate.js';
 import { sendOrderConfirmation, startPolling } from './bot.js';
+import * as db from './db.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
-const DATA_DIR = path.join(ROOT, 'data');
-const ORDERS_FILE = path.join(DATA_DIR, 'orders.json');
 
 const PORT = Number(process.env.PORT) || 3000;
 const CURRENCY = process.env.CURRENCY || 'USD';
@@ -20,16 +19,8 @@ const products = JSON.parse(fs.readFileSync(path.join(__dirname, 'products.json'
 const byId = new Map(products.map((p) => [String(p.id), p]));
 const money = (n) => new Intl.NumberFormat('ru-RU', { style: 'currency', currency: CURRENCY, maximumFractionDigits: 0 }).format(n);
 
-// ---------- хранилище заказов (JSON-файл) ----------
-fs.mkdirSync(DATA_DIR, { recursive: true });
-const readOrders = () => {
-  try { return JSON.parse(fs.readFileSync(ORDERS_FILE, 'utf8')); } catch { return []; }
-};
-const writeOrders = (list) => {
-  const tmp = ORDERS_FILE + '.tmp';
-  fs.writeFileSync(tmp, JSON.stringify(list, null, 2));
-  fs.renameSync(tmp, ORDERS_FILE);
-};
+// Express 4 не ловит ошибки async-обработчиков сам — оборачиваем.
+const wrap = (fn) => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
 
 // ---------- авторизация ----------
 function auth(req, res, next) {
@@ -73,14 +64,11 @@ app.get('/api/products', auth, (_req, res) => res.json(products));
 // Возвращает пользователя из ПРОВЕРЕННОГО initData
 app.get('/api/me', auth, (req, res) => res.json({ user: req.user }));
 
-app.get('/api/orders', auth, (req, res) => {
-  const mine = readOrders()
-    .filter((o) => o.userId === req.user.id)
-    .sort((a, b) => b.id - a.id);
-  res.json(mine);
-});
+app.get('/api/orders', auth, wrap(async (req, res) => {
+  res.json(await db.listOrders(req.user.id));
+}));
 
-app.post('/api/orders', auth, async (req, res) => {
+app.post('/api/orders', auth, wrap(async (req, res) => {
   const { items, name, phone, address, comment } = req.body || {};
   const str = (v, max) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
 
@@ -104,9 +92,7 @@ app.post('/api/orders', auth, async (req, res) => {
   }
   const total = lines.reduce((s, l) => s + l.price * l.qty, 0);
 
-  const orders = readOrders();
-  const order = {
-    id: (orders.at(-1)?.id || 1000) + 1,
+  const order = await db.createOrder({
     userId: req.user.id,
     items: lines,
     total,
@@ -114,11 +100,7 @@ app.post('/api/orders', auth, async (req, res) => {
     phone: cleanPhone,
     address: cleanAddr,
     comment: str(comment, 300),
-    createdAt: new Date().toISOString(),
-    status: 'new',
-  };
-  orders.push(order);
-  writeOrders(orders);
+  });
 
   // Подтверждение от бота. Заказ уже сохранён, поэтому сбой бота не валит запрос.
   let botNotified = false;
@@ -129,7 +111,7 @@ app.post('/api/orders', auth, async (req, res) => {
     console.warn('[bot] confirmation failed:', e.message);
   }
   res.status(201).json({ order, botNotified });
-});
+}));
 
 app.use(express.static(path.join(ROOT, 'public')));
 
@@ -138,8 +120,10 @@ app.use((err, _req, res, _next) => {
   res.status(500).json({ error: 'Внутренняя ошибка сервера' });
 });
 
+await db.init();
+
 app.listen(PORT, () => {
-  console.log(`Shop server: http://localhost:${PORT}`);
+  console.log(`Shop server: http://localhost:${PORT} (orders: ${db.mode()})`);
   if (!process.env.BOT_TOKEN) console.warn('⚠ BOT_TOKEN не задан: проверка initData и бот не работают');
   if (DEV_BYPASS) console.warn('⚠ DEV_BYPASS=1: авторизация без Telegram включена (только для разработки!)');
   if (process.env.BOT_POLLING === '1' && process.env.BOT_TOKEN) startPolling();
