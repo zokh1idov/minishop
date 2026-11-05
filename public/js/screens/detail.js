@@ -4,7 +4,7 @@ import { setMain, setSecondary } from '../buttons.js';
 import { haptic } from '../haptic.js';
 import { openTgLink } from '../tg.js';
 import { back } from '../router.js';
-import { esc, money, delegate, toast } from '../util.js';
+import { esc, money, delegate, toast, visual } from '../util.js';
 
 export function detail(root, { id }) {
   const p = product(id);
@@ -46,9 +46,8 @@ export function detail(root, { id }) {
 
   function draw() {
     root.innerHTML = `
-      <div class="hero" style="--c:${esc(p.color)}"><span>${p.emoji}</span></div>
-      <div class="pad">
-        <div class="hint">${esc(p.category)}</div>
+      <div class="hero">${visual(p)}</div>
+      <div class="pad" style="padding-top:22px">
         <h1>${esc(p.name)}</h1>
         <div class="price-big">${money(p.price)}</div>
         <p class="desc">${esc(p.description)}</p>

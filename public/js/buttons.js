@@ -6,6 +6,12 @@ import { tg, atLeast } from './tg.js';
 let mainHandler = null;
 let secondaryHandler = null;
 
+const isLight = () => tg.colorScheme === 'light';
+
+/** Фирменные цвета кнопок (красный акцент); Secondary подстраивается под тему. */
+const mainColors = () => (isLight() ? { color: '#c4122a', text_color: '#ffffff' } : { color: '#d9202f', text_color: '#ffffff' });
+const secondaryColors = () => (isLight() ? { color: '#eceaea', text_color: '#1b1013' } : { color: '#211519', text_color: '#f6eeef' });
+
 /**
  * MainButton. setMain(null) — скрыть и снять обработчик.
  * opts: { text, onClick, color?, text_color?, is_active?, has_shine_effect? }
@@ -17,7 +23,7 @@ export function setMain(opts) {
   if (!opts) { b.hide(); return; }
   const { onClick, ...params } = opts;
   if (!atLeast('7.10')) delete params.has_shine_effect; // Bot API 7.10+
-  b.setParams({ is_visible: true, is_active: true, ...params });
+  b.setParams({ is_visible: true, is_active: true, ...mainColors(), ...params });
   if (onClick) { mainHandler = onClick; b.onClick(onClick); }
 }
 
@@ -35,7 +41,7 @@ export function setSecondary(opts) {
   b.hideProgress();
   if (!opts) { b.hide(); return; }
   const { onClick, ...params } = opts;
-  b.setParams({ is_visible: true, is_active: true, ...params });
+  b.setParams({ is_visible: true, is_active: true, ...secondaryColors(), ...params });
   if (onClick) { secondaryHandler = onClick; b.onClick(onClick); }
 }
 

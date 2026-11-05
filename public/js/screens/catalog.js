@@ -5,7 +5,7 @@ import { setMain } from '../buttons.js';
 import { haptic } from '../haptic.js';
 import { user } from '../tg.js';
 import { go } from '../router.js';
-import { esc, money, delegate, avatar } from '../util.js';
+import { esc, money, delegate, visual } from '../util.js';
 
 export function catalog(root) {
   let category = 'all';
@@ -14,14 +14,20 @@ export function catalog(root) {
 
   const categories = () => ['all', ...new Set(state.products.map((p) => p.category))];
 
+  const ICON_ORDERS = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10a1 1 0 0 1 1 1v17l-3-2-3 2-3-2-3 2V4a1 1 0 0 1 1-1z"/><path d="M9 8h6M9 12h6"/></svg>';
+  const ICON_CART = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>';
+
   function header() {
     const u = user();
     return `
       <header class="top">
-        <div class="who">${avatar(u)}<div><div class="hint">Добро пожаловать</div><b>${esc(u?.first_name || 'гость')}</b></div></div>
+        <div>
+          <div class="brand">Minishop</div>
+          <div class="greeting">Здравствуйте, <b>${esc(u?.first_name || 'гость')}</b></div>
+        </div>
         <div class="top-actions">
-          <button class="icon-btn" data-a="orders" aria-label="Мои заказы">📦</button>
-          <button class="icon-btn" data-a="cart" aria-label="Корзина">🛒${cartCount() ? `<i class="badge">${cartCount()}</i>` : ''}</button>
+          <button class="icon-btn" data-a="orders" aria-label="Мои заказы">${ICON_ORDERS}</button>
+          <button class="icon-btn" data-a="cart" aria-label="Корзина">${ICON_CART}${cartCount() ? `<i class="badge">${cartCount()}</i>` : ''}</button>
         </div>
       </header>`;
   }
@@ -36,7 +42,7 @@ export function catalog(root) {
       return `<div class="state"><div class="state-ico">🫙</div><p>В этой категории пока пусто</p><button class="btn" data-a="chip" data-c="all">Показать всё</button></div>`;
     return `<div class="grid">${list.map((p) => `
       <button class="card" data-a="open" data-id="${p.id}">
-        <div class="thumb" style="--c:${esc(p.color)}"><span>${p.emoji}</span></div>
+        <div class="thumb">${visual(p)}</div>
         <div class="card-name">${esc(p.name)}</div>
         <div class="card-price">${money(p.price)}</div>
       </button>`).join('')}</div>`;

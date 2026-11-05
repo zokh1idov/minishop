@@ -21,14 +21,18 @@ if (new URLSearchParams(location.search).has('debug')) {
   document.head.append(s);
 }
 
-/** Окраска шапки / фона / нижней панели под тему Telegram. */
+/** Цвета фона приложения по схеме Telegram (должны совпадать с --bg в style.css). */
+const BG = { dark: '#0c0709', light: '#f4f3f3' };
+
+/** Окраска шапки / фона / нижней панели под тему Telegram. Вызывается и при themeChanged. */
 function applyChrome() {
+  const scheme = tg.colorScheme === 'light' ? 'light' : 'dark';
+  document.documentElement.dataset.scheme = scheme;
   try {
-    tg.setHeaderColor?.('secondary_bg_color');
-    tg.setBackgroundColor?.('secondary_bg_color');
-    if (atLeast('7.10')) tg.setBottomBarColor?.('bottom_bar_bg_color');
+    tg.setHeaderColor?.(BG[scheme]);
+    tg.setBackgroundColor?.(BG[scheme]);
+    if (atLeast('7.10')) tg.setBottomBarColor?.(BG[scheme]);
   } catch (e) { console.warn('chrome colors:', e); }
-  document.documentElement.dataset.scheme = tg.colorScheme || 'light';
 }
 
 /** Safe area: переносим значения клиента в наши CSS-переменные. */

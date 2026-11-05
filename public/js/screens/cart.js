@@ -4,7 +4,7 @@ import { setMain, setSecondary } from '../buttons.js';
 import { haptic } from '../haptic.js';
 import { confirmDialog } from '../tg.js';
 import { go, back } from '../router.js';
-import { esc, money, delegate } from '../util.js';
+import { esc, money, delegate, visual } from '../util.js';
 
 export function cart(root) {
   function buttons() {
@@ -36,7 +36,7 @@ export function cart(root) {
         <h1 class="pad-h">Корзина</h1>
         <ul class="list">${items.map(({ product: p, qty }) => `
           <li class="row">
-            <div class="mini" style="--c:${esc(p.color)}">${p.emoji}</div>
+            <div class="mini">${visual(p)}</div>
             <div class="row-main"><div class="row-name">${esc(p.name)}</div><div class="hint">${money(p.price)} × ${qty} = <b>${money(p.price * qty)}</b></div></div>
             <div class="stepper sm">
               <button data-a="minus" data-id="${p.id}" aria-label="Меньше">−</button><b>${qty}</b><button data-a="plus" data-id="${p.id}" aria-label="Больше">+</button>

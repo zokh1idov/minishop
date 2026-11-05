@@ -1,4 +1,5 @@
 import { state } from './state.js';
+import { art } from './art.js';
 
 export const esc = (s) =>
   String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -30,3 +31,9 @@ export const avatar = (u) =>
   u?.photo_url
     ? `<img class="avatar" src="${esc(u.photo_url)}" alt="" referrerpolicy="no-referrer">`
     : `<span class="avatar avatar-ph">${esc((u?.first_name || '?')[0].toUpperCase())}</span>`;
+
+/** Картинка товара: фото (поле image) → рисунок (поле art) → эмодзи. */
+export const visual = (p) =>
+  p.image
+    ? `<img class="pic" src="${esc(p.image)}" alt="" loading="lazy">`
+    : art(p.art) || `<span class="emo">${esc(p.emoji)}</span>`;

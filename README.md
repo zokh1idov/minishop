@@ -92,6 +92,12 @@ scripts/setup-bot.js
 | `requestFullscreen` / `exitFullscreen` | `screens/settings.js` |
 | `addToHomeScreen` | `screens/settings.js` |
 
+## Дизайн
+Тёмный премиум с красным акцентом: чёрный с красным подтоном, у каждого товара «витринный» красный свет, цены и заголовки шрифтом Prata, текст Manrope. Светлая тема (холодный белый + тот же красный) включается автоматически по `tg.colorScheme`; при `themeChanged` перекрашиваются шапка, фон, нижняя панель, MainButton и SecondaryButton (`public/js/app.js`, `public/js/buttons.js`). Все цвета лежат в переменных в начале `public/css/style.css`.
+
+### Картинки товаров
+Сейчас у каждого товара своя иллюстрация (`public/js/art.js`, поле `art` в `server/products.json`). Чтобы поставить настоящее фото, положите файл в `public/img/` и добавьте товару поле `"image": "img/hoodie.jpg"`: оно имеет приоритет над рисунком. Лучше всего подходят фото на тёмном или прозрачном фоне, пропорции 4:5.
+
 ## Безопасность
 - Подпись `initData` проверяется на сервере: `HMAC_SHA256(key = HMAC_SHA256("WebAppData", BOT_TOKEN), data_check_string)`; сравнение через `timingSafeEqual`; `auth_date` не старше `INIT_DATA_MAX_AGE` (по умолчанию 1 час).
 - Все `/api/*` (кроме `/config` и `/health`) требуют валидный `initData`; заказы привязаны к проверенному `user.id`.

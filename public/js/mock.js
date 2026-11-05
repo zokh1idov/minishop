@@ -17,7 +17,8 @@ export function createMock() {
     el.textContent = label;
     host.append(el);
     const cbs = new Set();
-    el.onclick = () => cbs.forEach((f) => f());
+    // копия набора: обработчик может сменить экран и добавить новый onClick прямо во время вызова
+    el.onclick = () => [...cbs].forEach((f) => f());
     const b = {
       text: label, isVisible: false, isActive: true, position: 'left', hasShineEffect: false,
       setParams(p = {}) {

@@ -8,10 +8,10 @@ import { money } from '../util.js';
 export function success(root, { order }) {
   root.innerHTML = `
     <div class="state big">
-      <div class="state-ico">🎉</div>
+      <div class="state-ico">✓</div>
       <h1>Заказ №${order.id} принят</h1>
       <p>Сумма: <b>${money(order.total)}</b></p>
-      <p class="hint">Подтверждение отправлено в чат с ботом.</p>
+      <p class="hint">Подтверждение пришло в чат с ботом.</p>
     </div>`;
 
   setMain({ text: 'Продолжить покупки', onClick: () => { haptic.impact('light'); setStack([['catalog']]); } });
