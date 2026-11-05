@@ -60,9 +60,17 @@ async function main() {
   applyChrome();
   applySafeArea();
 
+  // Полный экран при запуске, как у обычного приложения (только телефоны, Bot API 8.0+).
+  // Просим сразу, не дожидаясь сети; если пользователь выключил режим в «Настройках», выходим ниже.
+  const canFullscreen = ['android', 'ios'].includes(tg.platform) && atLeast('8.0') && typeof tg.requestFullscreen === 'function';
+  if (canFullscreen && !tg.isFullscreen) {
+    try { tg.requestFullscreen(); } catch (e) { console.warn('fullscreen:', e); }
+  }
+
   tg.onEvent('themeChanged', applyChrome);
   tg.onEvent('safeAreaChanged', applySafeArea);
   tg.onEvent('contentSafeAreaChanged', applySafeArea);
+  tg.onEvent('fullscreenChanged', applySafeArea); // в полноэкранном режиме меняются отступы под кнопки Telegram
   tg.onEvent('viewportChanged', () => {
     document.documentElement.style.setProperty('--vh', `${tg.viewportStableHeight || innerHeight}px`);
   });
@@ -92,6 +100,11 @@ async function main() {
   }
 
   await loadPersisted();
+
+  // Пользователь отключил полноэкранный режим в настройках — возвращаем обычный вид
+  if (canFullscreen && state.settings.fullscreen === false && tg.isFullscreen) {
+    try { tg.exitFullscreen(); } catch (e) { console.warn('fullscreen:', e); }
+  }
 
   // Подтверждение закрытия, пока в корзине есть товары (несохранённые данные)
   const syncClosing = () => (cartCount() > 0 ? tg.enableClosingConfirmation() : tg.disableClosingConfirmation());

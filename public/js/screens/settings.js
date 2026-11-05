@@ -4,6 +4,7 @@ import { cloud, device, secure } from '../storage.js';
 import { setMain } from '../buttons.js';
 import { haptic } from '../haptic.js';
 import { tg, atLeast, user, openTgLink } from '../tg.js';
+import { go } from '../router.js';
 import { esc, delegate, avatar, toast } from '../util.js';
 
 export function settings(root) {
@@ -22,6 +23,7 @@ export function settings(root) {
       </div>
 
       <div class="group">
+        <button class="link-row" data-a="orders">Мои заказы</button>
         ${canHome ? '<button class="link-row" data-a="home">Добавить на главный экран</button>' : ''}
         <button class="link-row" data-a="channel">Новости в Telegram</button>
         <button class="link-row" data-a="test">Проверить вибрацию</button>
@@ -31,6 +33,7 @@ export function settings(root) {
   }
 
   delegate(root, (a, el) => {
+    if (a === 'orders') { haptic.impact('light'); go('orders'); }
     if (a === 'home') { haptic.impact('light'); tg.addToHomeScreen(); }
     if (a === 'channel') { haptic.impact('light'); openTgLink('https://t.me/telegram'); }
     if (a === 'test') { haptic.impact('heavy'); setTimeout(() => haptic.notify('success'), 250); toast(state.settings.haptic ? 'Вибрация включена' : 'Вибрация выключена'); }
@@ -44,6 +47,7 @@ export function settings(root) {
     }
     if (a === 'fullscreen') {
       haptic.select();
+      updateSettings({ fullscreen: e.target.checked }); // запоминаем выбор на этом устройстве
       e.target.checked ? tg.requestFullscreen() : tg.exitFullscreen();
     }
   });

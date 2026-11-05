@@ -3,7 +3,7 @@ import { cloud, device } from './storage.js';
 
 export const state = {
   cart: {}, // { [productId]: qty }
-  settings: { haptic: true },
+  settings: { haptic: true, fullscreen: true },
   products: [],
   config: { currency: 'USD', botUsername: '', appName: '' },
 };

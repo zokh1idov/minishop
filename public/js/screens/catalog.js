@@ -5,7 +5,7 @@ import { setMain } from '../buttons.js';
 import { haptic } from '../haptic.js';
 import { user } from '../tg.js';
 import { go } from '../router.js';
-import { esc, money, delegate, visual } from '../util.js';
+import { esc, money, delegate, visual, avatar } from '../util.js';
 
 export function catalog(root) {
   let category = 'all';
@@ -14,20 +14,17 @@ export function catalog(root) {
 
   const categories = () => ['all', ...new Set(state.products.map((p) => p.category))];
 
-  const ICON_ORDERS = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10a1 1 0 0 1 1 1v17l-3-2-3 2-3-2-3 2V4a1 1 0 0 1 1-1z"/><path d="M9 8h6M9 12h6"/></svg>';
   const ICON_CART = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>';
 
+  // Справа вверху: корзина и ваш аккаунт Telegram (аватарка + имя). Нажатие на аккаунт открывает профиль и настройки.
   function header() {
     const u = user();
     return `
       <header class="top">
-        <div>
-          <div class="brand">Minishop</div>
-          <div class="greeting">Здравствуйте, <b>${esc(u?.first_name || 'гость')}</b></div>
-        </div>
+        <div class="brand">Minishop</div>
         <div class="top-actions">
-          <button class="icon-btn" data-a="orders" aria-label="Мои заказы">${ICON_ORDERS}</button>
           <button class="icon-btn" data-a="cart" aria-label="Корзина">${ICON_CART}${cartCount() ? `<i class="badge">${cartCount()}</i>` : ''}</button>
+          <button class="profile-chip" data-a="profile" aria-label="Профиль и настройки">${avatar(u)}<span>${esc(u?.first_name || 'Гость')}</span></button>
         </div>
       </header>`;
   }
@@ -78,7 +75,7 @@ export function catalog(root) {
     if (a === 'open') { haptic.impact('light'); go('detail', { id: el.dataset.id }); }
     if (a === 'chip') { haptic.select(); category = el.dataset.c; draw(); }
     if (a === 'cart') { haptic.impact('light'); go('cart'); }
-    if (a === 'orders') { haptic.impact('light'); go('orders'); }
+    if (a === 'profile') { haptic.impact('light'); go('settings'); }
     if (a === 'retry') { haptic.impact('medium'); load(); }
   });
 

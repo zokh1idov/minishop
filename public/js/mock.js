@@ -59,7 +59,7 @@ export function createMock() {
 
   return {
     initData: 'dev',
-    initDataUnsafe: { user: { id: 1, first_name: 'Dev', username: 'dev' }, start_param: new URLSearchParams(location.search).get('startapp') || '' },
+    initDataUnsafe: { user: { id: 1, first_name: new URLSearchParams(location.search).get('user') || 'Dev', username: 'dev', photo_url: new URLSearchParams(location.search).get('photo') || undefined }, start_param: new URLSearchParams(location.search).get('startapp') || '' },
     version: '9.0', platform: 'mock', colorScheme: matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light',
     themeParams: {}, isExpanded: true, isFullscreen: false, viewportHeight: innerHeight,
     safeAreaInset: { top: 0, bottom: 0, left: 0, right: 0 }, contentSafeAreaInset: { top: 0, bottom: 0, left: 0, right: 0 },
