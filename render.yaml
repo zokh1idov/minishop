@@ -1,0 +1,30 @@
+# Blueprint для Render.com (бесплатный тариф). Секреты вводятся в панели, не здесь.
+services:
+  - type: web
+    name: minishop
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: BOT_TOKEN
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: APP_URL
+        sync: false
+      - key: BOT_USERNAME
+        value: minishop_uz_bot
+      - key: APP_NAME
+        value: shop
+      - key: CURRENCY
+        value: USD
+      - key: INIT_DATA_MAX_AGE
+        value: "3600"
+      - key: DEV_BYPASS
+        value: "0"
+      - key: BOT_POLLING
+        value: "1"

@@ -1,0 +1,83 @@
+[
+  {
+    "id": 1,
+    "category": "Одежда",
+    "name": "Худи «Mini App»",
+    "price": 49,
+    "description": "Плотный хлопок, свободный крой, вышитый логотип. Тёплое и мягкое — для долгих сессий отладки.",
+    "art": "hoodie",
+    "image": "https://hourscollection.com/cdn/shop/files/DropShoulderHoodie-Charcoal-product_0b5762ad-d334-4c18-8458-de056823b9be.jpg?v=1783974291&width=1080"
+  },
+  {
+    "id": 2,
+    "category": "Одежда",
+    "name": "Футболка Telegram Dev",
+    "price": 19,
+    "description": "100% органический хлопок. Принт на груди, не выцветает после стирки.",
+    "art": "tee",
+    "image": "https://storage.yandexcloud.net/printio/assets/realistic_views/tee/tile/a037d9b2aee69d38e4aee14e3082f23e0574ae82.jpg?1528044614"
+  },
+  {
+    "id": 3,
+    "category": "Одежда",
+    "name": "Кепка с вышивкой",
+    "price": 15,
+    "description": "Регулируемый ремешок, дышащая ткань. Подходит всем размерам.",
+    "art": "cap",
+    "image": "https://www.bershkaru.ru/img/product/product_20275/010-products-20275.jpg"
+  },
+  {
+    "id": 4,
+    "category": "Аксессуары",
+    "name": "Рюкзак для ноутбука",
+    "price": 59,
+    "description": "Отделение для 16\" ноутбука, водоотталкивающая ткань, USB-порт для powerbank.",
+    "art": "backpack",
+    "image": "https://maxcom.uz/storage/product/RTI9KntlJ21iQHunW6x4vTYyZqXnShf0ClEMhjh6.jpeg"
+  },
+  {
+    "id": 5,
+    "category": "Аксессуары",
+    "name": "Набор стикеров",
+    "price": 5,
+    "description": "30 виниловых стикеров для ноутбука и телефона. Влагостойкие.",
+    "art": "stickers",
+    "image": "https://avatars.mds.yandex.net/get-mpic/16285991/2a0000019c5a5c33b7a1b2778de18acd367e/orig"
+  },
+  {
+    "id": 6,
+    "category": "Аксессуары",
+    "name": "Чехол для наушников",
+    "price": 12,
+    "description": "Жёсткий чехол на молнии с карманом для кабеля.",
+    "art": "case",
+    "image": "https://cdn.comfy.ua/media/catalog/product/cache/5/image/600x/9df78eab33525d08d6e5fb8d27136e95/3/2/3224437_1_.jpg"
+  },
+  {
+    "id": 7,
+    "category": "Дом",
+    "name": "Кружка «Hello, World»",
+    "price": 11,
+    "description": "Керамика 350 мл, подходит для посудомоечной машины и микроволновки.",
+    "art": "mug",
+    "image": "https://fun.ru/upload/46/ff/46ffcb9f18.jpg"
+  },
+  {
+    "id": 8,
+    "category": "Дом",
+    "name": "Термос 500 мл",
+    "price": 24,
+    "description": "Нержавеющая сталь, держит тепло 12 часов, холод — 24 часа.",
+    "art": "thermos",
+    "image": "https://www.kuchenland.ru/upload/uf/d84/xpztkb7vc1zmc0p9oahufmn90grkyvlj/img_535227407_600x800.webp"
+  },
+  {
+    "id": 9,
+    "category": "Дом",
+    "name": "Блокнот в точку",
+    "price": 9,
+    "description": "A5, 160 страниц, плотная бумага 100 г/м², ляссе.",
+    "art": "notebook",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiQQjZLkHg2BSXJzEcEQ7QMUh8SQznSUmCK3YJpaSOpECuq_IiBWTwhAs&s=10"
+  }
+]

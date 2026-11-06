@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ru" data-scheme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="color-scheme" content="dark light" />
+  <title>Minishop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script>
+    // Тема выставляется до первой отрисовки, чтобы не было вспышки неверного цвета.
+    (function () {
+      try {
+        var tg = window.Telegram && window.Telegram.WebApp;
+        var s = (tg && tg.colorScheme) || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.dataset.scheme = s;
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="app"></div>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
